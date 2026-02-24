@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article 12/19 Compliance Gap Visual | LXD Advisory</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        background: #f5f5f5;
+        padding: 20px;
+    }
+    
+    /* EDIT PANEL */
+    .edit-panel {
+        max-width: 1200px;
+        margin: 0 auto 30px auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border: 2px solid #00d4ff;
+    }
+    
+    .edit-panel h2 {
+        color: #0a0d12;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+    
+    .edit-section {
+        margin-bottom: 25px;
+    }
+    
+    .edit-section label {
+        display: block;
+        font-weight: 600;
+        color: #0a0d12;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .edit-section input,
+    .edit-section textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 0.95rem;
+    }
+    
+    .edit-section textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+    
+    .item-list {
+        margin-top: 10px;
+    }
+    
+    .item-input {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .item-input input {
+        flex: 1;
+    }
+    
+    .btn-add {
+        padding: 8px 16px;
+        background: #00d4ff;
+        color: #000;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .btn-add:hover {
+        background: #00b8e6;
+    }
+    
+    .btn-remove {
+        padding: 8px 12px;
+        background: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+    
+    .btn-update {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background: #0a0d12;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 20px;
+    }
+    
+    .btn-update:hover {
+        background: #1a1d24;
+    }
+    
+    /* VISUAL OUTPUT */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 60px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+    
+    .header {
+        text-align: center;
+        margin-bottom: 50px;
+        padding-bottom: 30px;
+        border-bottom: 3px solid #00d4ff;
+    }
+    
+    .header h1 {
+        font-size: 2.5rem;
+        color: #0a0d12;
+        margin-bottom: 15px;
+        letter-spacing: -0.02em;
+    }
+    
+    .header .subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        font-weight: 500;
+    }
+    
+    .box {
+        background: #0a0d12;
+        color: #ffffff;
+        padding: 40px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        border-left: 6px solid #00d4ff;
+    }
+    
+    .box.current {
+        background: #1a1d24;
+        border-left-color: #4ade80;
+    }
+    
+    .box.gap {
+        background: #2d1515;
+        border-left-color: #ef4444;
+    }
+    
+    .box.solution {
+        background: #0a1628;
+        border-left-color: #00d4ff;
+    }
+    
+    .box-header {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: #888;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    
+    .box.current .box-header { color: #4ade80; }
+    .box.gap .box-header { color: #ef4444; }
+    .box.solution .box-header { color: #00d4ff; }
+    
+    .box h2 {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        color: #ffffff;
+        letter-spacing: -0.01em;
+    }
+    
+    .box ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .box li {
+        padding: 12px 0 12px 35px;
+        position: relative;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #e0e0e0;
+    }
+    
+    .box li::before {
+        position: absolute;
+        left: 0;
+        top: 12px;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+    
+    .box.current li::before {
+        content: "✓";
+        color: #4ade80;
+    }
+    
+    .box.gap li::before {
+        content: "✗";
+        color: #ef4444;
+    }
+    
+    .box.solution li::before {
+        content: "→";
+        color: #00d4ff;
+    }
+    
+    .arrow {
+        text-align: center;
+        margin: 30px 0;
+    }
+    
+    .arrow-icon {
+        font-size: 3rem;
+        color: #666;
+        display: block;
+    }
+    
+    .arrow-label {
+        font-size: 1.2rem;
+        color: #ef4444;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-top: 10px;
+        background: #fff;
+        display: inline-block;
+        padding: 8px 20px;
+        border: 2px solid #ef4444;
+        border-radius: 4px;
+    }
+    
+    .footer {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .footer-left {
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .footer-left strong {
+        color: #0a0d12;
+        display: block;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+    
+    .footer-right {
+        text-align: right;
+    }
+    
+    .footer-right .deadline {
+        font-size: 1.3rem;
+        color: #ef4444;
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .footer-right .subtext {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    code {
+        font-family: 'Courier New', monospace;
+        background: rgba(0, 212, 255, 0.15);
+        padding: 2px 6px;
+        border-radius: 3px;
+        color: #00d4ff;
+        font-size: 0.95em;
+    }
+    
+    .print-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 15px 30px;
+        background: #00d4ff;
+        color: #000;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+    
+    .print-button:hover {
+        background: #00b8e6;
+    }
+    
+    @media print {
+        body {
+            background: white;
+            padding: 0;
+        }
+        .edit-panel,
+        .print-button {
+            display: none !important;
+        }
+        .container {
+            box-shadow: none;
+            padding: 40px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .edit-panel,
+        .container {
+            padding: 30px 20px;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+        }
+        .box {
+            padding: 25px 20px;
+        }
+        .box h2 {
+            font-size: 1.4rem;
+        }
+        .footer {
+            flex-direction: column;
+            text-align: center;
+        }
+        .footer-right {
+            text-align: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- EDIT PANEL -->
+<div class="edit-panel">
+    <h2>📝 Customize Gap Visual</h2>
+    
+    <div class="edit-section">
+        <label>Client/Company Name:</label>
+        <input type="text" id="clientName" value="SET Automotive" placeholder="e.g., SET Automotive, BMW, Mercedes">
+    </div>
+    
+    <div class="edit-section">
+        <label>Main Title:</label>
+        <input type="text" id="mainTitle" value="The Article 12/19 Compliance Gap">
+    </div>
+    
+    <div class="edit-section">
+        <label>Subtitle:</label>
+        <input type="text" id="subtitle" value="Most Tier-1 ADAS Suppliers Have Infrastructure — But Not Compliance Artifacts">
+    </div>
+    
+    <div class="edit-section">
+        <label>Current State - Section Title:</label>
+        <input type="text" id="currentTitle" value="Where SET Automotive Is Today">
+    </div>
+    
+    <div class="edit-section">
+        <label>Current State - Headline:</label>
+        <input type="text" id="currentHeadline" value="You Have the Foundation">
+    </div>
+    
+    <div class="edit-section">
+        <label>Current State Items (one per line):</label>
+        <div id="currentItems"></div>
+        <button class="btn-add" onclick="addItem('current')">+ Add Item</button>
+    </div>
+    
+    <div class="edit-section">
+        <label>Gap - Section Title:</label>
+        <input type="text" id="gapTitle" value="What Article 12/19 Actually Requires">
+    </div>
+    
+    <div class="edit-section">
+        <label>Gap - Headline:</label>
+        <input type="text" id="gapHeadline" value="Missing: Compliance-as-Code Artifacts">
+    </div>
+    
+    <div class="edit-section">
+        <label>Gap Items (one per line, use <code> for code snippets):</label>
+        <div id="gapItems"></div>
+        <button class="btn-add" onclick="addItem('gap')">+ Add Item</button>
+    </div>
+    
+    <div class="edit-section">
+        <label>Solution - Section Title:</label>
+        <input type="text" id="solutionTitle" value="What We Build in 21 Days (Production Sprint)">
+    </div>
+    
+    <div class="edit-section">
+        <label>Solution - Headline:</label>
+        <input type="text" id="solutionHeadline" value="Version-Controlled Compliance Artifacts">
+    </div>
+    
+    <div class="edit-section">
+        <label>Solution Items (one per line, use <code> for code snippets):</label>
+        <div id="solutionItems"></div>
+        <button class="btn-add" onclick="addItem('solution')">+ Add Item</button>
+    </div>
+    
+    <div class="edit-section">
+        <label>Days Remaining:</label>
+        <input type="number" id="daysRemaining" value="159">
+    </div>
+    
+    <button class="btn-update" onclick="updateVisual()">🔄 UPDATE VISUAL</button>
+</div>
+
+<!-- VISUAL OUTPUT -->
+<div class="container" id="visualOutput">
+    <div class="header">
+        <h1 id="displayTitle">The Article 12/19 Compliance Gap</h1>
+        <div class="subtitle" id="displaySubtitle">Most Tier-1 ADAS Suppliers Have Infrastructure — But Not Compliance Artifacts</div>
+    </div>
+    
+    <div class="box current">
+        <div class="box-header" id="displayCurrentTitle">Where SET Automotive Is Today</div>
+        <h2 id="displayCurrentHeadline">You Have the Foundation</h2>
+        <ul id="displayCurrentItems">
+            <li>ADAS platform logging infrastructure exists (capturing data)</li>
+            <li>Data is being stored and processed</li>
+            <li>Engineering teams understand ASPICE and ISO 26262</li>
+            <li>Product documentation for OEM clients</li>
+            <li>Strong B2B integration capabilities (APIs, ERPs)</li>
+            <li>Proven track record with major OEMs</li>
+        </ul>
+    </div>
+    
+    <div class="arrow">
+        <div class="arrow-icon">↓</div>
+        <div class="arrow-label">The Gap: No Formal Artifacts</div>
+    </div>
+    
+    <div class="box gap">
+        <div class="box-header" id="displayGapTitle">What Article 12/19 Actually Requires</div>
+        <h2 id="displayGapHeadline">Missing: Compliance-as-Code Artifacts</h2>
+        <ul id="displayGapItems">
+            <li>Formal logging schema (<code>logging_schema_v1.0.json</code>) mapping fields to Article 12 clauses</li>
+            <li>Field-level data type definitions, retention policies, validation rules as code</li>
+            <li>Automated Technical File generation (<code>article_12_technical_file.xml</code>) in EU format</li>
+            <li>Infrastructure-as-Code configs for OTA systems integration</li>
+            <li>Version-controlled compliance artifacts in SET's product repos</li>
+            <li>Automated compliance validators for pre-deployment checks</li>
+            <li>Article 19 log control policies as machine-readable configuration</li>
+            <li>Audit defense documentation auto-generated from schema annotations</li>
+        </ul>
+    </div>
+    
+    <div class="arrow">
+        <div class="arrow-icon">↓</div>
+    </div>
+    
+    <div class="box solution">
+        <div class="box-header" id="displaySolutionTitle">What We Build in 21 Days (Production Sprint)</div>
+        <h2 id="displaySolutionHeadline">Version-Controlled Compliance Artifacts</h2>
+        <ul id="displaySolutionItems">
+            <li><code>logging_schema_v1.0.json</code> — Article 12-compliant, machine-readable schema</li>
+            <li><code>article_12_technical_file.xml</code> — EU-required format, auto-generated from schema</li>
+            <li><code>platform_configuration.yaml</code> — Infrastructure-as-Code for SET's ADAS platform</li>
+            <li><code>compliance_validator.py</code> — Automated pre-deployment compliance checks</li>
+            <li><code>human_oversight_protocol.json</code> — Article 14 procedures as configuration</li>
+            <li><code>audit_defense_brief.md</code> — Auto-generated documentation for OEM clients</li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-left">
+            <strong>LXD Advisory</strong>
+            EU AI Act Article 12/19 Compliance Production Sprints<br>
+            hello@keithan.eu | www.lxdadvisory.de
+        </div>
+        <div class="footer-right">
+            <div class="deadline" id="displayDeadline">159 DAYS TO AUGUST 2, 2026</div>
+            <div class="subtext">Enforcement Deadline</div>
+        </div>
+    </div>
+</div>
+
+<button class="print-button" onclick="window.print()">🖨️ Print / Save as PDF</button>
+
+<script>
+// Initialize with default data
+const defaultData = {
+    current: [
+        "ADAS platform logging infrastructure exists (capturing data)",
+        "Data is being stored and processed",
+        "Engineering teams understand ASPICE and ISO 26262",
+        "Product documentation for OEM clients",
+        "Strong B2B integration capabilities (APIs, ERPs)",
+        "Proven track record with major OEMs"
+    ],
+    gap: [
+        "Formal logging schema (<code>logging_schema_v1.0.json</code>) mapping fields to Article 12 clauses",
+        "Field-level data type definitions, retention policies, validation rules as code",
+        "Automated Technical File generation (<code>article_12_technical_file.xml</code>) in EU format",
+        "Infrastructure-as-Code configs for OTA systems integration",
+        "Version-controlled compliance artifacts in SET's product repos",
+        "Automated compliance validators for pre-deployment checks",
+        "Article 19 log control policies as machine-readable configuration",
+        "Audit defense documentation auto-generated from schema annotations"
+    ],
+    solution: [
+        "<code>logging_schema_v1.0.json</code> — Article 12-compliant, machine-readable schema",
+        "<code>article_12_technical_file.xml</code> — EU-required format, auto-generated from schema",
+        "<code>platform_configuration.yaml</code> — Infrastructure-as-Code for SET's ADAS platform",
+        "<code>compliance_validator.py</code> — Automated pre-deployment compliance checks",
+        "<code>human_oversight_protocol.json</code> — Article 14 procedures as configuration",
+        "<code>audit_defense_brief.md</code> — Auto-generated documentation for OEM clients"
+    ]
+};
+
+// Initialize items
+function initItems() {
+    ['current', 'gap', 'solution'].forEach(type => {
+        defaultData[type].forEach(text => {
+            addItemWithText(type, text);
+        });
+    });
+}
+
+function addItem(type) {
+    addItemWithText(type, '');
+}
+
+function addItemWithText(type, text = '') {
+    const container = document.getElementById(`${type}Items`);
+    const div = document.createElement('div');
+    div.className = 'item-input';
+    div.innerHTML = `
+        <input type="text" value="${text.replace(/"/g, '&quot;')}" placeholder="Enter item text (use <code>text</code> for code formatting)">
+        <button class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+    `;
+    container.appendChild(div);
+}
+
+function updateVisual() {
+    // Update titles
+    document.getElementById('displayTitle').textContent = document.getElementById('mainTitle').value;
+    document.getElementById('displaySubtitle').textContent = document.getElementById('subtitle').value;
+    
+    // Update current state
+    document.getElementById('displayCurrentTitle').textContent = document.getElementById('currentTitle').value;
+    document.getElementById('displayCurrentHeadline').textContent = document.getElementById('currentHeadline').value;
+    updateList('current');
+    
+    // Update gap
+    document.getElementById('displayGapTitle').textContent = document.getElementById('gapTitle').value;
+    document.getElementById('displayGapHeadline').textContent = document.getElementById('gapHeadline').value;
+    updateList('gap');
+    
+    // Update solution
+    document.getElementById('displaySolutionTitle').textContent = document.getElementById('solutionTitle').value;
+    document.getElementById('displaySolutionHeadline').textContent = document.getElementById('solutionHeadline').value;
+    updateList('solution');
+    
+    // Update deadline
+    const days = document.getElementById('daysRemaining').value;
+    document.getElementById('displayDeadline').textContent = `${days} DAYS TO AUGUST 2, 2026`;
+    
+    // Scroll to visual
+    document.getElementById('visualOutput').scrollIntoView({ behavior: 'smooth' });
+}
+
+function updateList(type) {
+    const container = document.getElementById(`${type}Items`);
+    const inputs = container.querySelectorAll('input');
+    const list = document.getElementById(`display${capitalize(type)}Items`);
+    
+    list.innerHTML = '';
+    inputs.forEach(input => {
+        if (input.value.trim()) {
+            const li = document.createElement('li');
+            li.innerHTML = input.value;
+            list.appendChild(li);
+        }
+    });
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Initialize on load
+window.onload = initItems;
+</script>
+
+</body>
+</html>
